@@ -1,6 +1,6 @@
 // @ts-ignore
 
-import express from 'express';
+import {express, Request, Response} from 'express';
 const app = express();
 const port = 3000;
 
@@ -9,10 +9,10 @@ app.use(middleware)
 
 let profiles = [{id: 1, name: "lavrik"}, {id: 2, name: 'dev-vladimir'}, {id: 3, name: 'dev-unknown'},]
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.json({message: 'main page'});
 })
-app.get('/profile', (req, res) => {
+app.get('/profile', (req: Request, res: Response) => {
 
     let foundProfile = profiles
     if(req.query.name) {
@@ -20,8 +20,11 @@ app.get('/profile', (req, res) => {
     }
     res.json(foundProfile);
 })
-app.get('/profile/:id', (req: any, res: any) => {
+app.get('/profile/:id', (req: Request, res: Response) => {
+
+    // @ts-ignore
     const foundProfiles = profiles.find(p => p.id === +req.params.id)
+
 
     if(!foundProfiles) {
         res.sendStatus(404)
@@ -33,7 +36,7 @@ app.get('/profile/:id', (req: any, res: any) => {
     )
 })
 
-app.post('/profile', (req, res) => {
+app.post('/profile', (req: Request, res: Response) => {
     if(!req.body.name) {
         res.sendStatus(400);
         return
@@ -50,20 +53,22 @@ app.post('/profile', (req, res) => {
     res.status(201). json(newProfile)
 })
 
-app.delete('/profile/:id', (req: any, res: any) => {
+app.delete('/profile/:id', (req: Request, res: Response) => {
     // const length = profiles.length;
     console.log(req.params.id, profiles)
+    // @ts-ignore
     profiles = profiles.filter(p => p.id !== +req.params.id)
 
 
     res.sendStatus(204)
 })
 
-app.post('/profile/:id', (req: any, res: any) => {
+app.post('/profile/:id', (req: Request, res: Response) => {
     if(!req.body.name) {
         res.sendStatus(400);
         return
     }
+    // @ts-ignore
     const foundProfiles = profiles.find(p => p.id === +req.params.id)
 
     if(!foundProfiles) {
